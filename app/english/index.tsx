@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Image } from 'expo-image';
 import { Header } from '@/components/layout/Header';
 import { ENGLISH_TOPICS, EnglishTopic } from '@/services/englishData';
 import { Colors, FontSize, FontWeight, Spacing, Radius, Shadow } from '@/constants/theme';
@@ -12,9 +13,33 @@ const CAT_COLORS: Record<string, string> = {
   grammar: '#45B7D1', vocabulary: '#10B981', speaking: '#F59E0B', writing: '#6C63FF',
 };
 
+const NOTEBOOK_IMAGES = [
+  {
+    id: 'eng-notes-1',
+    label: 'Tenses Chart',
+    uri: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=400&q=80',
+  },
+  {
+    id: 'eng-notes-2',
+    label: 'Parts of Speech',
+    uri: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&q=80',
+  },
+  {
+    id: 'eng-notes-3',
+    label: 'Vocabulary List',
+    uri: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80',
+  },
+  {
+    id: 'eng-notes-4',
+    label: 'Speaking Practice',
+    uri: 'https://images.unsplash.com/photo-1543165796-5426273eaab3?w=400&q=80',
+  },
+];
+
 export default function EnglishScreen() {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [expandedNote, setExpandedNote] = useState<string | null>(null);
 
   const categories = ['all', 'grammar', 'vocabulary', 'speaking', 'writing'];
   const filtered = activeCategory === 'all' ? ENGLISH_TOPICS : ENGLISH_TOPICS.filter(t => t.category === activeCategory);
@@ -84,22 +109,172 @@ export default function EnglishScreen() {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <Pressable style={styles.aiCTA} onPress={() => router.push('/(tabs)/chat' as any)}>
-            <LinearGradient colors={['#45B7D1', '#6C63FF']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.aiCTAInner}>
-              <Text style={styles.aiCTAEmoji}>🗣️</Text>
-              <View>
-                <Text style={styles.aiCTATitle}>AI Conversation Practice</Text>
-                <Text style={styles.aiCTASub}>Chat in English, get instant corrections</Text>
-              </View>
-              <MaterialIcons name="arrow-forward" size={20} color="#fff" style={{ marginLeft: 'auto' }} />
-            </LinearGradient>
-          </Pressable>
+          <View>
+            {/* AI Practice CTA */}
+            <Pressable style={styles.aiCTA} onPress={() => router.push('/(tabs)/chat' as any)}>
+              <LinearGradient colors={['#45B7D1', '#6C63FF']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.aiCTAInner}>
+                <Text style={styles.aiCTAEmoji}>🗣️</Text>
+                <View>
+                  <Text style={styles.aiCTATitle}>AI Conversation Practice</Text>
+                  <Text style={styles.aiCTASub}>Chat in English, get instant corrections</Text>
+                </View>
+                <MaterialIcons name="arrow-forward" size={20} color="#fff" style={{ marginLeft: 'auto' }} />
+              </LinearGradient>
+            </Pressable>
+
+            {/* Notebook Notes */}
+            <NotebookSection
+              images={NOTEBOOK_IMAGES}
+              expandedNote={expandedNote}
+              onToggle={setExpandedNote}
+              color="#45B7D1"
+            />
+          </View>
         }
         renderItem={renderTopic}
       />
     </View>
   );
 }
+
+function NotebookSection({
+  images, expandedNote, onToggle, color,
+}: {
+  images: { id: string; label: string; uri: string }[];
+  expandedNote: string | null;
+  onToggle: (id: string | null) => void;
+  color: string;
+}) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <View style={nbStyles.container}>
+      <Pressable
+        onPress={() => setIsOpen(v => !v)}
+        style={({ pressed }) => [nbStyles.header, pressed && { opacity: 0.85 }]}
+      >
+        <View style={[nbStyles.badge, { backgroundColor: color + '20' }]}>
+          <Text style={nbStyles.badgeEmoji}>📓</Text>
+        </View>
+        <View style={nbStyles.headerText}>
+          <Text style={nbStyles.title}>My Notebook — English Notes</Text>
+          <Text style={nbStyles.subtitle}>Grammar rules and vocabulary notes</Text>
+        </View>
+        <MaterialIcons
+          name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+          size={22}
+          color={Colors.textSubtle}
+        />
+      </Pressable>
+
+      {isOpen ? (
+        <>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={nbStyles.scrollContent}
+          >
+            {images.map((img) => (
+              <Pressable
+                key={img.id}
+                onPress={() => onToggle(expandedNote === img.id ? null : img.id)}
+                style={({ pressed }) => [nbStyles.thumb, pressed && { opacity: 0.9 }]}
+              >
+                <Image
+                  source={{ uri: img.uri }}
+                  style={nbStyles.thumbImage}
+                  contentFit="cover"
+                  transition={200}
+                />
+                <View style={nbStyles.thumbLabel}>
+                  <Text style={nbStyles.thumbText} numberOfLines={2}>{img.label}</Text>
+                </View>
+              </Pressable>
+            ))}
+            <Pressable style={nbStyles.addNoteCard}>
+              <MaterialIcons name="add-photo-alternate" size={28} color={color} />
+              <Text style={[nbStyles.addNoteText, { color }]}>Upload Your{'\n'}Notes</Text>
+            </Pressable>
+          </ScrollView>
+
+          {expandedNote ? (
+            <View style={nbStyles.expanded}>
+              <Image
+                source={{ uri: images.find(i => i.id === expandedNote)?.uri || '' }}
+                style={nbStyles.expandedImage}
+                contentFit="contain"
+                transition={200}
+              />
+              <Pressable onPress={() => onToggle(null)} style={nbStyles.closeBtn} hitSlop={8}>
+                <MaterialIcons name="close" size={20} color="#fff" />
+              </Pressable>
+            </View>
+          ) : null}
+        </>
+      ) : null}
+    </View>
+  );
+}
+
+const nbStyles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.surface,
+    borderRadius: Radius.xl,
+    marginBottom: Spacing.md,
+    overflow: 'hidden',
+    ...Shadow.sm,
+  },
+  header: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md },
+  badge: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  badgeEmoji: { fontSize: 22 },
+  headerText: { flex: 1, gap: 2 },
+  title: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.text },
+  subtitle: { fontSize: FontSize.xs, color: Colors.textSubtle },
+  scrollContent: { gap: Spacing.sm, paddingHorizontal: Spacing.md, paddingBottom: Spacing.md },
+  thumb: {
+    width: 130,
+    borderRadius: Radius.lg,
+    overflow: 'hidden',
+    backgroundColor: Colors.background,
+    borderWidth: 1,
+    borderColor: Colors.borderLight,
+  },
+  thumbImage: { width: 130, height: 100 },
+  thumbLabel: { padding: 8, backgroundColor: Colors.surface },
+  thumbText: { fontSize: 11, fontWeight: FontWeight.medium, color: Colors.textSecondary, lineHeight: 15 },
+  addNoteCard: {
+    width: 100,
+    height: 130,
+    borderRadius: Radius.lg,
+    borderWidth: 2,
+    borderColor: Colors.border,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: Colors.background,
+  },
+  addNoteText: { fontSize: 11, fontWeight: FontWeight.medium, textAlign: 'center' },
+  expanded: {
+    marginHorizontal: Spacing.md,
+    marginBottom: Spacing.md,
+    borderRadius: Radius.lg,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  expandedImage: { width: '100%', height: 280, backgroundColor: Colors.background },
+  closeBtn: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    borderRadius: 16,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },

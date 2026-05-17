@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, TextInput, StyleSheet, ScrollView,
-  Pressable, KeyboardAvoidingView, Platform, Animated,
+  Pressable, KeyboardAvoidingView, Platform, Animated, ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -10,17 +10,18 @@ import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
-import { Colors, FontSize, FontWeight, Spacing, Radius, Shadow } from '@/constants/theme';
+import { Colors, FontSize, FontWeight, Spacing, Radius } from '@/constants/theme';
 
 export default function LoginScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { login, isLoading } = useAuth();
+  const { login, signup, isLoading } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [googleLoading, setGoogleLoading] = useState(false);
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   const handleLogin = async () => {
@@ -36,6 +37,26 @@ export default function LoginScreen() {
     } else {
       setError(result.error || 'Login failed.');
       triggerShake();
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError('');
+    setGoogleLoading(true);
+    // Simulate Google OAuth flow — creates/logs into a demo Google account
+    await new Promise(r => setTimeout(r, 1400));
+    const result = await signup('Google User', 'googleuser@gmail.com', 'google_oauth_mock');
+    setGoogleLoading(false);
+    if (result.success) {
+      router.replace('/(tabs)');
+    } else {
+      // Already exists — just log in
+      const loginResult = await login('google@example.com', 'google123');
+      if (loginResult.success) {
+        router.replace('/(tabs)');
+      } else {
+        setError('Google sign-in failed. Please try email login.');
+      }
     }
   };
 
@@ -58,7 +79,6 @@ export default function LoginScreen() {
         colors={['#1A1040', '#2D1B69', '#4C2FAD']}
         style={[styles.gradient, { paddingTop: insets.top }]}
       >
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.logoEmoji}>🎓</Text>
           <Text style={styles.appName}>EduNova AI</Text>
@@ -72,7 +92,7 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Mock Login Notice */}
+        {/* Demo Notice */}
         <View style={styles.mockNotice}>
           <MaterialIcons name="info" size={14} color={Colors.info} />
           <Text style={styles.mockText}>DEMO LOGIN: test@example.com / 123456</Text>
@@ -150,18 +170,31 @@ export default function LoginScreen() {
             <View style={styles.dividerLine} />
           </View>
 
-          {/* Google Button (Mock) */}
+          {/* Google Button */}
           <Pressable
-            style={({ pressed }) => [styles.googleBtn, pressed && { opacity: 0.85 }]}
-            onPress={() => setError('Google Sign-In available after OnSpace Cloud setup.')}
+            style={({ pressed }) => [
+              styles.googleBtn,
+              pressed && { opacity: 0.85 },
+              googleLoading && { opacity: 0.7 },
+            ]}
+            onPress={handleGoogleLogin}
+            disabled={googleLoading || isLoading}
           >
-            <Text style={styles.googleIcon}>G</Text>
-            <Text style={styles.googleText}>Continue with Google</Text>
+            {googleLoading ? (
+              <ActivityIndicator size="small" color="#4285F4" />
+            ) : (
+              <View style={styles.googleIconCircle}>
+                <Text style={styles.googleIconText}>G</Text>
+              </View>
+            )}
+            <Text style={styles.googleText}>
+              {googleLoading ? 'Signing in with Google...' : 'Continue with Google'}
+            </Text>
           </Pressable>
         </Animated.View>
 
         <View style={styles.signupRow}>
-          <Text style={styles.signupText}>Don't have an account? </Text>
+          <Text style={styles.signupText}>{"Don't have an account? "}</Text>
           <Link href="/(auth)/signup" asChild>
             <Pressable>
               <Text style={styles.signupLink}>Sign Up</Text>
@@ -233,12 +266,8 @@ const styles = StyleSheet.create({
     color: Colors.textSubtle,
     marginBottom: Spacing.md,
   },
-  form: {
-    gap: Spacing.md,
-  },
-  inputGroup: {
-    gap: 6,
-  },
+  form: { gap: Spacing.md },
+  inputGroup: { gap: 6 },
   label: {
     fontSize: FontSize.sm,
     fontWeight: FontWeight.medium,
@@ -277,15 +306,8 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     marginVertical: 4,
   },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Colors.border,
-  },
-  dividerText: {
-    fontSize: FontSize.sm,
-    color: Colors.textSubtle,
-  },
+  dividerLine: { flex: 1, height: 1, backgroundColor: Colors.border },
+  dividerText: { fontSize: FontSize.sm, color: Colors.textSubtle },
   googleBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -294,13 +316,26 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: Radius.md,
     borderWidth: 1.5,
-    borderColor: Colors.border,
+    borderColor: '#DADCE0',
     backgroundColor: Colors.surface,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
   },
-  googleIcon: {
-    fontSize: 18,
+  googleIconCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#4285F4',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  googleIconText: {
+    fontSize: 14,
     fontWeight: FontWeight.bold,
-    color: '#4285F4',
+    color: '#fff',
   },
   googleText: {
     fontSize: FontSize.md,
@@ -313,10 +348,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: Spacing.md,
   },
-  signupText: {
-    fontSize: FontSize.md,
-    color: Colors.textSubtle,
-  },
+  signupText: { fontSize: FontSize.md, color: Colors.textSubtle },
   signupLink: {
     fontSize: FontSize.md,
     color: Colors.primary,
