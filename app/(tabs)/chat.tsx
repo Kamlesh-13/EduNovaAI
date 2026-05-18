@@ -8,7 +8,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { ChatBubble } from '@/components/feature/ChatBubble';
-import { useApp, ChatMessage } from '@/contexts/AppContext';
+import { ChatMessage } from '@/contexts/AppContext';
+import { useApp } from '@/hooks/useApp';
 import { getAIResponse, AIChatModule } from '@/services/aiService';
 import { Colors, FontSize, FontWeight, Spacing, Radius } from '@/constants/theme';
 
