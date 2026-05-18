@@ -49,9 +49,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise(r => setTimeout(r, 1000));
 
-    if (email.trim().toLowerCase() === MOCK_USER.email && password === MOCK_USER.password) {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Check if user already signed up and stored in AsyncStorage
+    try {
+      const allKeys = await AsyncStorage.getAllKeys();
+      const accountKeys = allKeys.filter(k => k.startsWith('@edunova_account_'));
+      for (const key of accountKeys) {
+        const stored = await AsyncStorage.getItem(key);
+        if (stored) {
+          const account = JSON.parse(stored);
+          if (account.email === normalizedEmail && account.password === password) {
+            const userData: User = {
+              id: account.id,
+              name: account.name,
+              email: account.email,
+              avatar: account.avatar || null,
+              streak: account.streak || 1,
+              totalPoints: account.totalPoints || 0,
+              completedLessons: account.completedLessons || 0,
+              badges: account.badges || ['New Learner'],
+              joinDate: account.joinDate || new Date().toISOString().split('T')[0],
+            };
+            setUser(userData);
+            await AsyncStorage.setItem('@edunova_user', JSON.stringify(userData));
+            setIsLoading(false);
+            return { success: true };
+          }
+        }
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+
+    // Also allow the built-in demo account
+    if (normalizedEmail === MOCK_USER.email && password === MOCK_USER.password) {
       const userData: User = {
         id: MOCK_USER.id,
         name: MOCK_USER.name,
@@ -70,17 +104,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     setIsLoading(false);
-    return { success: false, error: 'Invalid email or password. Try test@example.com / 123456' };
+    return { success: false, error: 'No account found with these credentials. Please sign up first.' };
   };
 
   const signup = async (name: string, email: string, password: string) => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 1000));
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const userId = `user-${Date.now()}`;
 
     const userData: User = {
-      id: `user-${Date.now()}`,
+      id: userId,
       name: name.trim(),
-      email: email.trim().toLowerCase(),
+      email: normalizedEmail,
       avatar: null,
       streak: 0,
       totalPoints: 0,
@@ -88,6 +125,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       badges: ['New Learner'],
       joinDate: new Date().toISOString().split('T')[0],
     };
+
+    // Persist account credentials for future logins
+    try {
+      await AsyncStorage.setItem(
+        `@edunova_account_${normalizedEmail}`,
+        JSON.stringify({ ...userData, password })
+      );
+    } catch (e) {
+      // ignore
+    }
+
     setUser(userData);
     await AsyncStorage.setItem('@edunova_user', JSON.stringify(userData));
     setIsLoading(false);

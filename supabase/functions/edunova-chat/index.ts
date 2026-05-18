@@ -49,13 +49,19 @@ Be encouraging, motivating, and supportive. Keep responses concise but complete.
 
     const systemPrompt = systemPrompts[module] || systemPrompts.general;
 
-    const onspaceAiUrl = `${Deno.env.get('SUPABASE_URL')}/functions/v1/onspace-ai-proxy`;
+    // Use ONSPACE_AI_BASE_URL and ONSPACE_AI_API_KEY from environment secrets
+    const onspaceAiBaseUrl = Deno.env.get('ONSPACE_AI_BASE_URL');
+    const onspaceAiApiKey = Deno.env.get('ONSPACE_AI_API_KEY');
 
-    const aiResponse = await fetch(onspaceAiUrl, {
+    if (!onspaceAiBaseUrl || !onspaceAiApiKey) {
+      throw new Error('OnSpace AI credentials not configured');
+    }
+
+    const aiResponse = await fetch(`${onspaceAiBaseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+        'Authorization': `Bearer ${onspaceAiApiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4.1-mini',

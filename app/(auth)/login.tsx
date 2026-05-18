@@ -92,12 +92,6 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Demo Notice */}
-        <View style={styles.mockNotice}>
-          <MaterialIcons name="info" size={14} color={Colors.info} />
-          <Text style={styles.mockText}>DEMO LOGIN: test@example.com / 123456</Text>
-        </View>
-
         <Text style={styles.title}>Welcome Back! 👋</Text>
         <Text style={styles.subtitle}>Sign in to continue learning</Text>
 
@@ -240,20 +234,6 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     paddingBottom: 48,
     gap: 8,
-  },
-  mockNotice: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: '#EFF6FF',
-    padding: 10,
-    borderRadius: Radius.md,
-    marginBottom: 8,
-  },
-  mockText: {
-    fontSize: 11,
-    color: Colors.info,
-    fontWeight: FontWeight.medium,
   },
   title: {
     fontSize: FontSize.xxl,
