@@ -43,9 +43,13 @@ export const ENGLISH_TOPICS: EnglishTopic[] = [
       { incorrect: 'I am knowing the answer.', correct: 'I know the answer.', explanation: 'State verbs (know, believe, want) don\'t use continuous tenses' },
     ],
     exercises: [
-      { id: 't1', type: 'fill-blank', question: 'She ___ (study) for three hours yesterday.', answer: 'studied', explanation: 'Simple past: completed action in the past' },
-      { id: 't2', type: 'choose-correct', question: 'Which is correct?', options: ['I am knowing him since school', 'I have known him since school', 'I knew him since school'], answer: 'I have known him since school', explanation: 'Present Perfect with "since" for states lasting until now' },
-      { id: 't3', type: 'correct-sentence', question: 'Fix: "By tomorrow, I will finished the report."', answer: 'By tomorrow, I will have finished the report.', explanation: 'Future Perfect: will have + V3 for action complete by a future time' },
+      { id: 't1', type: 'fill-blank', question: 'She ___ (study) for three hours yesterday.', answer: 'studied', explanation: 'Simple past: completed action in the past.' },
+      { id: 't2', type: 'choose-correct', question: 'Which is correct?', options: ['I am knowing him since school', 'I have known him since school', 'I knew him since school'], answer: 'I have known him since school', explanation: 'Present Perfect with "since" for states lasting until now.' },
+      { id: 't3', type: 'correct-sentence', question: 'Fix: "By tomorrow, I will finished the report."', answer: 'By tomorrow, I will have finished the report.', explanation: 'Future Perfect: will have + V3 for action complete by a future time.' },
+      { id: 't4', type: 'fill-blank', question: 'They ___ (play) cricket when it started raining.', answer: 'were playing', explanation: 'Past Continuous (was/were + V-ing): ongoing action in the past that was interrupted.' },
+      { id: 't5', type: 'choose-correct', question: 'I ___ here for five years. (Choose correct tense)', options: ['am working', 'have been working', 'worked', 'was working'], answer: 'have been working', explanation: 'Present Perfect Continuous: action started in past, still continuing. Use with "for" + period.' },
+      { id: 't6', type: 'correct-sentence', question: 'Fix: "She has went to the market."', answer: 'She has gone to the market.', explanation: 'Present Perfect needs V3 (past participle). Go → went → gone. "went" is simple past, NOT past participle.' },
+      { id: 't7', type: 'choose-correct', question: 'Which sentence uses Simple Future tense?', options: ['She goes tomorrow.', 'She will go tomorrow.', 'She is going tomorrow.', 'She went tomorrow.'], answer: 'She will go tomorrow.', explanation: 'Simple Future = will + V1. The others are: Simple Present, Present Continuous (planned future), and Simple Past (wrong with "tomorrow").' },
     ],
   },
   {
@@ -69,6 +73,10 @@ export const ENGLISH_TOPICS: EnglishTopic[] = [
     exercises: [
       { id: 'pos1', type: 'choose-correct', question: 'What part of speech is "beautiful" in "a beautiful sunset"?', options: ['Noun', 'Adverb', 'Adjective', 'Verb'], answer: 'Adjective', explanation: 'Beautiful describes the noun "sunset" — that makes it an adjective.' },
       { id: 'pos2', type: 'choose-correct', question: 'Identify the conjunction: "I wanted to come, but I was busy."', options: ['I', 'wanted', 'but', 'busy'], answer: 'but', explanation: '"but" is a coordinating conjunction joining two clauses.' },
+      { id: 'pos3', type: 'choose-correct', question: 'What part of speech is "quickly" in "She ran quickly"?', options: ['Adjective', 'Noun', 'Adverb', 'Verb'], answer: 'Adverb', explanation: '"Quickly" modifies the verb "ran" — adverbs modify verbs, adjectives, or other adverbs.' },
+      { id: 'pos4', type: 'fill-blank', question: 'The word "happiness" is a ___. (part of speech)', answer: 'Noun', explanation: 'Happiness is an abstract noun — it names a concept, feeling, or idea.' },
+      { id: 'pos5', type: 'correct-sentence', question: 'Identify all nouns in: "The brave soldier fought the enemy at the border."', answer: 'Nouns: soldier, enemy, border', explanation: '"brave" = adjective, "fought" = verb, "the" = article. Soldier, enemy, border name people/places/things.' },
+      { id: 'pos6', type: 'choose-correct', question: 'Which word is a preposition in: "She sat under the tree"?', options: ['sat', 'under', 'tree', 'She'], answer: 'under', explanation: '"under" shows the relationship between "sat" and "the tree" — it is a preposition.' },
     ],
   },
   {
@@ -91,8 +99,12 @@ export const ENGLISH_TOPICS: EnglishTopic[] = [
       { correct: 'Someone has stolen my wallet. → My wallet has been stolen.', explanation: 'Present perfect passive: has/have been + V3. "by someone" omitted (unknown doer)' },
     ],
     exercises: [
-      { id: 'v1', type: 'correct-sentence', question: 'Change to passive: "She wrote a letter."', answer: 'A letter was written by her.', explanation: 'Simple past passive: Object + was/were + V3 + by + Subject(object case)' },
-      { id: 'v2', type: 'fill-blank', question: 'The cake ___ (eat) by the children. [Simple Past Passive]', answer: 'was eaten', explanation: 'Past passive: was/were + past participle' },
+      { id: 'v1', type: 'correct-sentence', question: 'Change to passive: "She wrote a letter."', answer: 'A letter was written by her.', explanation: 'Simple past passive: Object + was/were + V3 + by + Subject(object case).' },
+      { id: 'v2', type: 'fill-blank', question: 'The cake ___ (eat) by the children. [Simple Past Passive]', answer: 'was eaten', explanation: 'Past passive: was/were + past participle.' },
+      { id: 'v3', type: 'correct-sentence', question: 'Change to passive: "They are building a new school."', answer: 'A new school is being built by them.', explanation: 'Present Continuous Passive: is/am/are + being + V3.' },
+      { id: 'v4', type: 'choose-correct', question: 'Which is correct passive of: "She has completed the project"?', options: ['The project has been completed by her.', 'The project was completed by her.', 'The project is completed by her.', 'The project had been completed by her.'], answer: 'The project has been completed by her.', explanation: 'Present Perfect Passive = has/have + been + V3. The tense (present perfect) must be preserved.' },
+      { id: 'v5', type: 'fill-blank', question: 'Letters ___ (deliver) every morning. [Simple Present Passive]', answer: 'are delivered', explanation: 'Simple Present Passive: am/is/are + V3. "Letters" is plural → "are delivered".' },
+      { id: 'v6', type: 'correct-sentence', question: 'Change to active: "The song was sung beautifully by her."', answer: 'She sang the song beautifully.', explanation: 'Active: Subject (agent) + verb in same tense + object. "by her" becomes "She"; was sung (past passive) → sang (simple past active).' },
     ],
   },
   {
@@ -116,6 +128,10 @@ export const ENGLISH_TOPICS: EnglishTopic[] = [
     exercises: [
       { id: 'voc1', type: 'choose-correct', question: 'Choose the synonym for DILIGENT:', options: ['Lazy', 'Hardworking', 'Careless', 'Slow'], answer: 'Hardworking', explanation: 'Diligent means hardworking, showing steady effort and care.' },
       { id: 'voc2', type: 'choose-correct', question: 'What does EPHEMERAL mean?', options: ['Permanent', 'Lasting only a short time', 'Very large', 'Confusing'], answer: 'Lasting only a short time', explanation: 'Ephemeral (adj): lasting for a very short time. "An ephemeral trend."' },
+      { id: 'voc3', type: 'choose-correct', question: 'Antonym of BENEVOLENT:', options: ['Kind', 'Malevolent', 'Generous', 'Gentle'], answer: 'Malevolent', explanation: 'Benevolent = wishing good (bene = good). Malevolent = wishing harm (male = bad). Opposite!' },
+      { id: 'voc4', type: 'fill-blank', question: 'The prefix UN- in UNHAPPY means ___.', answer: 'not', explanation: 'UN- is a negative prefix meaning "not": unhappy=not happy, unkind=not kind, unlike=not like.' },
+      { id: 'voc5', type: 'choose-correct', question: 'Choose the correct meaning of VERBOSE:', options: ['Silent', 'Using too many words', 'Polite', 'Angry'], answer: 'Using too many words', explanation: 'Verbose = using more words than necessary. From Latin "verbum" (word). Opposite: concise.' },
+      { id: 'voc6', type: 'choose-correct', question: 'Synonym for AMBIGUOUS:', options: ['Clear', 'Vague', 'Exact', 'Simple'], answer: 'Vague', explanation: 'Ambiguous means having more than one possible meaning, unclear. Synonym: vague, unclear, equivocal.' },
     ],
   },
   {
@@ -274,8 +290,10 @@ export const ENGLISH_TOPICS: EnglishTopic[] = [
       { correct: 'Instead of: "I am not knowing." → Say: "I don\'t know." / "I\'m not sure."', explanation: 'State verbs (know, understand, believe) are not used in continuous form.' },
     ],
     exercises: [
-      { id: 'sp1', type: 'choose-correct', question: 'Which is more natural in spoken English?', options: ['I am not understanding this.', 'I don\'t understand this.', 'I am not understand this.'], answer: "I don't understand this.", explanation: '"Understand" is a state verb — use simple present, not continuous.' },
+      { id: 'sp1', type: 'choose-correct', question: 'Which is more natural in spoken English?', options: ['I am not understanding this.', "I don't understand this.", 'I am not understand this.'], answer: "I don't understand this.", explanation: '"Understand" is a state verb — use simple present, not continuous.' },
       { id: 'sp2', type: 'fill-blank', question: 'Polite request: "___ you please help me?" (modal verb)', answer: 'Could', explanation: 'Could/Would you please... is the most polite request form.' },
+      { id: 'sp3', type: 'choose-correct', question: 'Which phrase best replaces "I want to say that..." in formal speaking?', options: ['I would like to point out that...', 'I wanna say...', 'The thing is...', 'You know what...'], answer: 'I would like to point out that...', explanation: 'In formal or academic speaking, "I would like to" is more polished and professional than casual filler phrases.' },
+      { id: 'sp4', type: 'correct-sentence', question: 'Make more confident: "Maybe I think this idea could be perhaps good."', answer: '"I believe this is an excellent idea." or "This idea has great potential."', explanation: 'Eliminate hedging words (maybe, perhaps, could be). Use assertive language: I believe, I am confident, This will... Strong speakers commit to their ideas.' },
     ],
   },
 ];

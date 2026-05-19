@@ -58,7 +58,7 @@ export default function MathScreen() {
         />
         <View style={styles.heroContent}>
           <Text style={styles.heroEmoji}>📐</Text>
-          <Text style={styles.heroText}>{FORMULAS.length} Formulas · 8 Categories</Text>
+          <Text style={styles.heroText}>{FORMULAS.length} Formulas · 8 Categories · 80+ Practice Questions</Text>
         </View>
 
         {/* Search */}
