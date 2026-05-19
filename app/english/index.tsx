@@ -26,13 +26,28 @@ const NOTEBOOK_IMAGES = [
   },
   {
     id: 'eng-notes-3',
-    label: 'Vocabulary List',
+    label: 'Subject-Verb Agreement',
     uri: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80',
   },
   {
     id: 'eng-notes-4',
-    label: 'Speaking Practice',
+    label: 'Prepositions Notes',
     uri: 'https://images.unsplash.com/photo-1543165796-5426273eaab3?w=400&q=80',
+  },
+  {
+    id: 'eng-notes-5',
+    label: 'Direct & Indirect Speech',
+    uri: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&q=80',
+  },
+  {
+    id: 'eng-notes-6',
+    label: 'Non-Finite Verbs',
+    uri: 'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=400&q=80',
+  },
+  {
+    id: 'eng-notes-7',
+    label: 'Sentence Types',
+    uri: 'https://images.unsplash.com/photo-1550399105-c4db5fb85c18?w=400&q=80',
   },
 ];
 
@@ -69,7 +84,7 @@ export default function EnglishScreen() {
       <LinearGradient colors={['#45B7D1', '#6C63FF']} style={styles.hero}>
         <Header title="English Coach" subtitle="Grammar & Speaking" backgroundColor="transparent" textColor="#fff" />
         <View style={styles.heroStats}>
-          {[{ v: '5', l: 'Topics' }, { v: '20+', l: 'Exercises' }, { v: 'AI', l: 'Practice Partner' }].map((s, i) => (
+          {[{ v: '10', l: 'Topics' }, { v: '40+', l: 'Exercises' }, { v: 'AI', l: 'Practice Partner' }].map((s, i) => (
             <View key={i} style={styles.heroStat}>
               <Text style={styles.heroStatVal}>{s.v}</Text>
               <Text style={styles.heroStatLbl}>{s.l}</Text>
