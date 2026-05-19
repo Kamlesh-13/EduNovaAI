@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import {
-  View, Text, ScrollView, StyleSheet, TextInput, Pressable, FlatList,
+  View, Text, StyleSheet, TextInput, Pressable, FlatList,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Image } from 'expo-image';
 import { Header } from '@/components/layout/Header';
 import { FormulaCard } from '@/components/feature/FormulaCard';
+import { NotebookSection } from '@/components/feature/NotebookSection';
 import { MATH_CATEGORIES, FORMULAS, searchFormulas } from '@/services/mathData';
 import { Colors, FontSize, FontWeight, Spacing, Radius, Shadow } from '@/constants/theme';
 
-// Placeholder notebook pages - replace with real uploaded notebook images
-const NOTEBOOK_IMAGES = [
+const MATH_PLACEHOLDER_IMAGES = [
   {
     id: 'math-notes-1',
     label: 'Algebra Formulas',
@@ -40,7 +39,6 @@ export default function MathScreen() {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [expandedNote, setExpandedNote] = useState<string | null>(null);
 
   const filtered = search.trim()
     ? searchFormulas(search)
@@ -115,11 +113,10 @@ export default function MathScreen() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <NotebookSection
-            title="📓 My Notebook — Math Notes"
-            subtitle="Handwritten notes from your notebook"
-            images={NOTEBOOK_IMAGES}
-            expandedNote={expandedNote}
-            onToggle={setExpandedNote}
+            storageKey="math"
+            title="My Notebook — Math Notes"
+            subtitle="Handwritten formula notes"
+            placeholderImages={MATH_PLACEHOLDER_IMAGES}
             color="#6C63FF"
           />
         }
@@ -135,200 +132,7 @@ export default function MathScreen() {
   );
 }
 
-function NotebookSection({
-  title, subtitle, images, expandedNote, onToggle, color,
-}: {
-  title: string;
-  subtitle: string;
-  images: { id: string; label: string; uri: string }[];
-  expandedNote: string | null;
-  onToggle: (id: string | null) => void;
-  color: string;
-}) {
-  const [isOpen, setIsOpen] = useState(true);
 
-  return (
-    <View style={nbStyles.container}>
-      <Pressable
-        onPress={() => setIsOpen(v => !v)}
-        style={({ pressed }) => [nbStyles.header, pressed && { opacity: 0.85 }]}
-      >
-        <View style={[nbStyles.badge, { backgroundColor: color + '20' }]}>
-          <Text style={nbStyles.badgeEmoji}>📓</Text>
-        </View>
-        <View style={nbStyles.headerText}>
-          <Text style={nbStyles.title}>{title}</Text>
-          <Text style={nbStyles.subtitle}>{subtitle}</Text>
-        </View>
-        <MaterialIcons
-          name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-          size={22}
-          color={Colors.textSubtle}
-        />
-      </Pressable>
-
-      {isOpen ? (
-        <>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={nbStyles.scrollContent}
-          >
-            {images.map((img) => (
-              <Pressable
-                key={img.id}
-                onPress={() => onToggle(expandedNote === img.id ? null : img.id)}
-                style={({ pressed }) => [nbStyles.thumb, pressed && { opacity: 0.9 }]}
-              >
-                <Image
-                  source={{ uri: img.uri }}
-                  style={nbStyles.thumbImage}
-                  contentFit="cover"
-                  transition={200}
-                />
-                <View style={nbStyles.thumbLabel}>
-                  <Text style={nbStyles.thumbText} numberOfLines={2}>{img.label}</Text>
-                </View>
-                {expandedNote === img.id ? (
-                  <View style={nbStyles.expandedBadge}>
-                    <MaterialIcons name="fullscreen" size={14} color="#fff" />
-                  </View>
-                ) : null}
-              </Pressable>
-            ))}
-
-            {/* Add Notes Placeholder */}
-            <Pressable style={nbStyles.addNoteCard}>
-              <MaterialIcons name="add-photo-alternate" size={28} color={color} />
-              <Text style={[nbStyles.addNoteText, { color }]}>Upload Your{'\n'}Notes</Text>
-            </Pressable>
-          </ScrollView>
-
-          {/* Expanded Image */}
-          {expandedNote ? (
-            <View style={nbStyles.expanded}>
-              <Image
-                source={{ uri: images.find(i => i.id === expandedNote)?.uri || '' }}
-                style={nbStyles.expandedImage}
-                contentFit="contain"
-                transition={200}
-              />
-              <Pressable
-                onPress={() => onToggle(null)}
-                style={nbStyles.closeBtn}
-                hitSlop={8}
-              >
-                <MaterialIcons name="close" size={20} color="#fff" />
-              </Pressable>
-            </View>
-          ) : null}
-        </>
-      ) : null}
-    </View>
-  );
-}
-
-const nbStyles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.surface,
-    borderRadius: Radius.xl,
-    marginBottom: Spacing.md,
-    overflow: 'hidden',
-    ...Shadow.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
-    padding: Spacing.md,
-  },
-  badge: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeEmoji: { fontSize: 22 },
-  headerText: { flex: 1, gap: 2 },
-  title: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.text },
-  subtitle: { fontSize: FontSize.xs, color: Colors.textSubtle },
-  scrollContent: {
-    gap: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.md,
-  },
-  thumb: {
-    width: 130,
-    borderRadius: Radius.lg,
-    overflow: 'hidden',
-    backgroundColor: Colors.background,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
-  },
-  thumbImage: {
-    width: 130,
-    height: 100,
-  },
-  thumbLabel: {
-    padding: 8,
-    backgroundColor: Colors.surface,
-  },
-  thumbText: {
-    fontSize: 11,
-    fontWeight: FontWeight.medium,
-    color: Colors.textSecondary,
-    lineHeight: 15,
-  },
-  expandedBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderRadius: 6,
-    padding: 3,
-  },
-  addNoteCard: {
-    width: 100,
-    height: 130,
-    borderRadius: Radius.lg,
-    borderWidth: 2,
-    borderColor: Colors.border,
-    borderStyle: 'dashed',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: Colors.background,
-  },
-  addNoteText: {
-    fontSize: 11,
-    fontWeight: FontWeight.medium,
-    textAlign: 'center',
-  },
-  expanded: {
-    marginHorizontal: Spacing.md,
-    marginBottom: Spacing.md,
-    borderRadius: Radius.lg,
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  expandedImage: {
-    width: '100%',
-    height: 280,
-    backgroundColor: Colors.background,
-  },
-  closeBtn: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.55)',
-    borderRadius: 16,
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },
