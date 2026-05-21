@@ -1,8 +1,3 @@
-/*
- * @Description: 
- */
-
-// Powered by OnSpace.AI
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -13,22 +8,22 @@ export default function NotFoundScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
-        colors={['#0a0a0a', '#1a1a1a']}
+        colors={['#1A1040', '#2D1B69']}
         style={StyleSheet.absoluteFillObject}
       />
-      
+
       <View style={styles.content}>
-        <MaterialIcons name="photo-camera" size={80} color="#FFD700" />
+        <MaterialIcons name="school" size={80} color="#6C63FF" />
         <Text style={styles.title}>Page Not Found</Text>
         <Text style={styles.message}>
-          The moment you're looking for seems to have been lost in the shadows.
+          This page doesn't exist yet. Head back to continue learning!
         </Text>
-        
-        <TouchableOpacity 
+
+        <TouchableOpacity
           style={styles.homeButton}
-          onPress={() => router.push('/')}
+          onPress={() => router.replace('/')}
         >
-          <Text style={styles.homeButtonText}>Return Home</Text>
+          <Text style={styles.homeButtonText}>Go Home</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -38,7 +33,7 @@ export default function NotFoundScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: '#0F0E1A',
   },
   content: {
     flex: 1,
@@ -55,19 +50,19 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 16,
-    color: '#CCCCCC',
+    color: '#9CA3AF',
     textAlign: 'center',
     marginBottom: 40,
     lineHeight: 22,
   },
   homeButton: {
-    backgroundColor: '#FFD700',
+    backgroundColor: '#6C63FF',
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 25,
   },
   homeButtonText: {
-    color: '#0a0a0a',
+    color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Animated, Dimensions, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import { Image } from 'expo-image';
 import { useAuth } from '@/hooks/useAuth';
 import { Colors, FontSize, FontWeight } from '@/constants/theme';
 
@@ -18,11 +17,15 @@ export default function SplashScreen() {
   const taglineAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.sequence([
-      Animated.timing(logoAnim, { toValue: 1, duration: 700, useNativeDriver: true }),
-      Animated.timing(textAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
-      Animated.timing(taglineAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
-    ]).start();
+    const animate = () => {
+      Animated.sequence([
+        Animated.timing(logoAnim, { toValue: 1, duration: 700, useNativeDriver: true }),
+        Animated.timing(textAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
+        Animated.timing(taglineAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
+      ]).start();
+    };
+
+    animate();
 
     const timer = setTimeout(() => {
       if (!isLoading) {
@@ -43,14 +46,6 @@ export default function SplashScreen() {
       style={styles.container}
     >
       <StatusBar style="light" />
-
-      <Image
-        source={require('@/assets/images/splash-hero.png')}
-        style={styles.heroImage}
-        contentFit="cover"
-      />
-
-      <View style={styles.overlay} />
 
       <View style={styles.content}>
         <Animated.View style={[styles.logoContainer, {
@@ -94,18 +89,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  heroImage: {
-    position: 'absolute',
-    width,
-    height,
-    opacity: 0.15,
-  },
-  overlay: {
-    position: 'absolute',
-    width,
-    height,
-    backgroundColor: 'transparent',
   },
   content: {
     alignItems: 'center',
