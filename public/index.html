@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="EduNova AI - Your AI-Powered Study Partner. Learn Math, Aptitude, Web Development, and English with intelligent tutoring." />
+  <meta name="theme-color" content="#6C63FF" />
+  <meta property="og:title" content="EduNova AI - Learn Smarter, Not Harder" />
+  <meta property="og:description" content="AI-powered study assistant for Math, Aptitude, Web Dev, and English" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>EduNova AI - Learn Smarter, Not Harder</title>
+  <style>
+    #root, body, html { height: 100%; }
+    body { overflow: hidden; margin: 0; }
+    #root { display: flex; }
+    #loading-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #1A1040, #2D1B69, #4C2FAD);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      transition: opacity 0.4s ease-out;
+    }
+    #loading-screen.fade-out { opacity: 0; pointer-events: none; }
+    #loading-screen .logo { font-size: 56px; }
+    #loading-screen .title { color: #fff; font-size: 32px; font-weight: 800; letter-spacing: 1px; }
+    #loading-screen .subtitle { color: rgba(255,255,255,0.7); font-size: 16px; }
+    #loading-screen .spinner {
+      width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin-top: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="loading-screen">
+      <div class="logo">&#127891;</div>
+      <div class="title">EduNova AI</div>
+      <div class="subtitle">Learn Smarter, Not Harder</div>
+      <div class="spinner"></div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var el = document.getElementById('loading-screen');
+        if (el) { el.classList.add('fade-out'); setTimeout(function() { el.remove(); }, 500); }
+      }, 200);
+    });
+  </script>
+</body>
+</html>
