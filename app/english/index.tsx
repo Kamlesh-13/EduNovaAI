@@ -83,7 +83,7 @@ export default function EnglishScreen() {
       <LinearGradient colors={['#45B7D1', '#6C63FF']} style={styles.hero}>
         <Header title="English Coach" subtitle="Grammar & Speaking" backgroundColor="transparent" textColor="#fff" />
         <View style={styles.heroStats}>
-          {[{ v: '10', l: 'Topics' }, { v: '55+', l: 'Exercises' }, { v: 'AI', l: 'Practice Partner' }].map((s, i) => (
+          {[{ v: '15', l: 'Topics' }, { v: '80+', l: 'Exercises' }, { v: 'AI', l: 'Practice Partner' }].map((s, i) => (
             <View key={i} style={styles.heroStat}>
               <Text style={styles.heroStatVal}>{s.v}</Text>
               <Text style={styles.heroStatLbl}>{s.l}</Text>
